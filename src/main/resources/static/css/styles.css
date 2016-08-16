@@ -1,0 +1,74 @@
+table.contacts  {
+    text-align: left;
+    /*border: 1px solid black;*/
+    /*border-collapse: collapse;*/
+    width: 93%;
+    margin: 30px;
+}
+
+div.well-contacts {
+    margin-top:20px;
+}
+
+/*#login-alert {*/
+    /*width: 95%;*/
+    /*margin: 15px;*/
+/*}*/
+
+/*button.contacts:hover {
+    background-color: #5cb85c !important;
+}*/
+
+/*.aligner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}*/
+
+.login-box {
+    /*display: flex;*/
+    /*max-width: 50%;*/
+    /*margin-left: 30px;*/
+
+    border: 1px solid #ddd;
+    border-top: none;
+    width: 40%;
+    padding: 40px 40px 20px 40px;
+    /*margin-top: 10%;*/
+    box-shadow: 7px 7px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+ul.nav-tabs {
+    width: 40%;
+}
+
+/*.container .registration {
+    margin: 30px 50px;
+}*/
+
+.registration {
+    margin-left: 30px;
+}
+
+.registration input, label {
+    width: 60%;
+}
+
+.registration-alert-message {
+    width: 60%;
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding: 10px;
+}
+
+#error-message {
+    display: none;
+}
+
+/*.registration button {*/
+    /*margin-left: 30px;*/
+/*}*/
+
+.welcome {
+    text-align: center;
+}

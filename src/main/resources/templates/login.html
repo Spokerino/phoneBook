@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome to Phonebook</title>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"/>-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script th:src="@{/js/jquery.validate.js}"></script>
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/login.js}" ></script>
+</head>
+<body>
+<div id="login-alert" class="alert alert-danger" th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div class="alert alert-info" th:if="${param.logout}">
+    You have been logged out.
+</div>
+<div class="alert alert-success" th:if="${param.registered}">
+    You have been successfully registered.
+</div>
+
+
+<div class="jumbotron">
+    <h1 class="welcome">Welcome to PhoneBook</h1>
+</div>
+
+<ul class="nav nav-tabs container">
+    <li class="active"><a data-toggle="tab" href="#login-tab">Login</a></li>
+    <li><a data-toggle="tab" href="#reg-tab">Registration</a></li>
+</ul>
+
+<div class="container login-box">
+    <div class="tab-content">
+        <div id="login-tab" class="tab-pane fade in active">
+            <form class="form-horizontal" role="form" th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="login-login"><span class="glyphicon glyphicon-user"></span> Username:</label><br/>
+                    <input class="form-control" type="text" name="login" id="login-login" placeholder="Enter login"/>
+                </div>
+                <div class="form-group">
+                    <label for="login-password"><span class="glyphicon glyphicon-eye-open"></span> Password:</label><br/>
+                    <input class="form-control" type="password" name="password" id="login-password" placeholder="Enter password"/>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Sign In</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="reg-tab" class="tab-pane fade">
+            <form id="registration-form" class="form-horizontal" role="form" th:action="@{/register}" th:object="${account}" method="post">
+                <div class="form-group">
+                    <label for="login"> User name:</label><br/>
+                    <div class="err">
+                        <input class="form-control" type="text" th:field="*{login}" name="login" id="login" placeholder="Enter login" th:value="tryMe"/>
+                    </div>
+                    <!--<div class="alert alert-danger registration-alert-message" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>-->
+                </div>
+                <div class="form-group">
+                    <label for="password"> Password:</label><br/>
+                    <div class="err">
+                        <input class="form-control" type="password" th:field="*{password}" name="password" id="password" placeholder="Enter password"/>
+                    </div>
+                    <!--<div class="alert alert-danger registration-alert-message" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>-->
+                </div>
+                <div class="form-group">
+                    <label for="fio"> Full name:</label><br/>
+                    <div class="err">
+                        <input class="form-control" type="text" th:field="*{fio}" name="fio" id="fio" placeholder="Enter your full name"/>
+                    </div>
+                    <!--<div class="alert alert-danger registration-alert-message" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}"></div>-->
+                </div>
+                <div class="form-group">
+                    <div id="error-message" class="alert alert-danger">
+                        <a onclick="$('#error-message').css('display', 'none')" class="close pull-right" aria-label="close">&times;</a>
+                         Such user already exist!</div>
+                    <button type="submit" class="btn btn-default">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        window.history.pushState("", "", "/login");
+        validateForm('#registration-form');
+//        ajaxForm('#login-registration');
+/*        $('#login-registration').submit(function (event) {
+            var login = $('#login').val();
+            var password = $('#password').val();
+            var fio = $('#fio').val();
+            var json = {"login": login, "password": password, "fio": fio};
+
+            $.ajax({
+                url: $('#login-registration').attr("action"),
+                data: JSON.stringify(json),
+                dataType: 'json',
+                type: "POST",
+                success: function (data) {
+//                      console.log("SUCCESS: ", data);
+                    window.location.replace("/login?registered");
+                },
+                error: function (data) {
+//                      console.log("ERROR: ", data);
+                    if (data.responseText === 'exist') {
+                        $('#error-message').css("display", "block");
+                    }
+                },
+
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json");
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                }
+            });
+            event.preventDefault();
+        });*/
+    });
+</script>
+
+</body>
+</html>

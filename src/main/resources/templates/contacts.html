@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Contacs</title>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"/>-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script th:src="@{/js/jquery.validate.js}"></script>
+    <script th:src="@{/js/contacts.js}"></script>
+    <!--<script th:src="@{/js/contact.js}"></script>-->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.js"></script>
+
+    <style>
+        .modal-header, h4, .close {
+            background-color: #5cb85c;
+            color:white !important;
+            text-align: center;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="alert alert-warning" th:if="${#lists.isEmpty(contacts)}">
+        You have no contacts yet!
+    </div>
+
+    <div class="container">
+        <div class="well well-contacts">
+            <button class="btn btn-default" id="addContact">
+                <span class="glyphicon glyphicon-plus"></span> Add new contact
+            </button>
+
+            <form class="pull-right" th:action="@{/logout}" method="post">
+                <button class="btn btn-default " type="submit">
+                    <span class="glyphicon glyphicon-log-out"></span> Logout
+                </button>
+            </form>
+        </div>
+
+        <!-- Modal for adding new contacts-->
+        <div class="modal fade" id="addModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="padding:35px 50px;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4><span class="glyphicon glyphicon-pencil"></span> Contact's information</h4>
+                    </div>
+                    <div class="modal-body" style="padding:40px 50px;">
+                        <form id="contact-form" role="form" th:action="@{/contacts/new}" th:object="${contact}" method="post">
+                            <div class="form-group">
+                                <label for="first-name"> First name *</label>
+                                <div class="err">
+                                    <input type="text" class="form-control" id="first-name" placeholder="Enter first name" th:field="*{firstName}" th:value="sdsdsddd"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name"> Last name *</label>
+                                <div class="err">
+                                    <input type="text" class="form-control" id="last-name" placeholder="Enter last name" th:field="*{lastName}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="patronymic"> Patronymic *</label>
+                                <div class="err">
+                                    <input type="text" class="form-control" id="patronymic" placeholder="Enter patronymic" th:field="*{patronymic}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mobile"> Mobile phone *</label>
+                                <div class="err">
+                                    <input type="tel" class="form-control" id="mobile" placeholder="Enter mobile phone" th:field="*{phoneMobile}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="home-phone"> Home phone</label>
+                                <div class="err">
+                                    <input type="tel" class="form-control" id="home-phone" placeholder="Enter home phone" th:field="*{phoneHome}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address"> Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="Enter address" th:field="*{address}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"> Mail</label>
+                                <div class="err">
+                                    <input type="email" class="form-control" id="email" placeholder="Enter e-mail" th:field="*{email}"/>
+                                </div>
+                            </div>
+                            <!--<div class="checkbox">-->
+                                <!--<label><input type="checkbox" value="" checked>Remember me</label>-->
+                            <!--</div>-->
+                            <button type="submit" class="btn btn-success btn-block">
+                                <span class="glyphicon glyphicon-ok"></span> Add to contact list
+                            </button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-remove"></span> Cancel
+                        </button>
+                        <p><span class="glyphicon glyphicon-asterisk"></span> - required fields</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Modal for modifying contacts-->
+        <div class="modal fade" th:id="editModal" role="dialog" tabindex="-1">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header" style="padding:35px 50px;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4><span class="glyphicon glyphicon-pencil"></span> Contact's information</h4>
+                    </div>
+                    <div class="modal-body" style="padding:40px 50px;">
+                        <form id="contact-form-edit" role="form" th:action="@{/contacts/update}" th:object="${contact}" method="post">
+                            <input id="id-update" type="hidden" th:field="*{idContact}" th:value="${contact.idContact}"/>
+                            <div class="form-group">
+                                <label for="first-name-update"> First name *</label>
+                                <div class="err">
+                                    <input type="text" class="form-control" id="first-name-update" placeholder="Enter first name" th:field="*{firstName}" th:value="${contact.firstName}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="last-name-update"> Last name *</label>
+                                <div class="err">
+                                    <input type="text" class="form-control" id="last-name-update" placeholder="Enter last name" th:field="*{lastName}" th:value="${contact.lastName}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="patronymic-update"> Patronymic *</label>
+                                <div class="err">
+                                    <input type="text" class="form-control" id="patronymic-update" placeholder="Enter patronymic" th:field="*{patronymic}" th:value="${contact.patronymic}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="mobile-update"> Mobile phone *</label>
+                                <div class="err">
+                                    <input type="tel" class="form-control" id="mobile-update" placeholder="Enter mobile phone" th:field="*{phoneMobile}" th:value="${contact.phoneMobile}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="home-phone-update"> Home phone</label>
+                                <div class="err">
+                                    <input type="tel" class="form-control" id="home-phone-update" placeholder="Enter home phone" th:field="*{phoneHome}" th:value="${contact.phoneHome}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address-update"> Address</label>
+                                <div class="err">
+                                    <input type="text" class="form-control" id="address-update" placeholder="Enter address" th:field="*{address}" th:value="${contact.address}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email-update"> Mail</label>
+                                <div class="err">
+                                    <input type="email" class="form-control" id="email-update" placeholder="Enter e-mail" th:field="*{email}" th:value="${contact.email}"/>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-block">
+                                <span class="glyphicon glyphicon-ok"></span> Add to contact list
+                            </button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-remove"></span> Cancel
+                        </button>
+                        <p><span class="glyphicon glyphicon-asterisk"></span> - required fields</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <table class="table table-striped table-hover contacts" th:if="${not #lists.isEmpty(contacts)}">
+            <tr>
+                <th>#</th>
+                <th>First Name</th>
+                <th>Patronymic</th>
+                <th>Last Name</th>
+                <th>Mobile Phone</th>
+                <th>Home Phone</th>
+                <th></th>
+            </tr>
+            <tr th:each="contact : ${contacts}">
+                <td th:text="${contactStat.index} + 1"></td>
+                <td th:text="${contact.firstName}"></td>
+                <td th:text="${contact.patronymic}"></td>
+                <td th:text="${contact.lastName}"></td>
+                <td th:text="${contact.phoneMobile}"></td>
+                <td th:text="${contact.phoneHome}"></td>
+                <td>
+                    <button data-toggle="modal" data-target="#editModal" class="btn-info contacts" th:onclick="'showEditModal(' + ${contact.idContact} + ')'">Contact details</button>
+                </td>
+            </tr>
+        </table>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#addContact").click(function(){
+            $("#addModal").modal();
+        });
+        validateForm('#contact-form');
+    });
+</script>
+
+</body>
+</html>
