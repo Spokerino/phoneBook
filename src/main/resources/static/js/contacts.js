@@ -1,17 +1,47 @@
-// Begin Something modal population and submit functions
+$(document).ready(function() {
+    $("#addContact").click(function () {
+        $("#addModal").modal();
+    });
+
+    validateForm('#contact-form');
+
+    $(document).on("click", ".popover .btn-default", function () {
+        $(this).parents(".popover").popover('hide');
+    });
+
+    $('body').on('hidden.bs.popover', function (e) {
+        $(e.target).data("bs.popover").inState.click = false;
+    });
+});
+
+function showContactPopover(id) {
+    $('[data-toggle="popover"]').popover({
+        placement: 'top',
+        html: true,
+        title: 'Delete contact?',
+        content: '<div class="media-body">' +
+        '<button class="btn btn-default pull-left">Cancel</button>' +
+        '<form action="contacts/'  + id + '/delete" method="get">' +
+        '<button class="btn btn-danger pull-right" type="submit">Delete</button>' +
+        '</form>' +
+        '</div>'
+    });
+}
+
+// Begin Contact modal population and submit functions
 var url = "/contacts/";
 var editModalTarget = url + "loadContact/";
 var names = ['idContact', 'firstName', 'lastName', 'patronymic',
     'phoneMobile', 'phoneHome', 'address', 'email'];
 
 
-// Build the url for the Ajax request for Something.
+// Build the url for the Ajax request for Contact.
 function showEditModal(index) {
     var editUrl = editModalTarget + index;
     loadEntity(editUrl);
 }
 
-// Ajax request for Something to populate the modal form.
+// Ajax request for Contact to populate the modal form.
 function loadEntity(url) {
     $.getJSON(url, {}, function (data) {
         populateModal(data, names);
@@ -123,4 +153,6 @@ function validateForm(id) {
             $(element).next("span").addClass("glyphicon-ok").removeClass("glyphicon-remove");
         }
     });
+
+
 }

@@ -1,4 +1,4 @@
-package com.example.entities;
+package org.spok.entities;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -18,8 +18,8 @@ public class Account {
     private String login;
 
     @NotEmpty
-    @Size(min = 5, max = 15, message = "Password should be at least {min} characters long")
-    @Column(length = 15)
+    @Size(min = 5, max = 60, message = "Password should be at least {min} characters long")
+    @Column(length = 60)
     private String password;
 
     @NotEmpty
@@ -31,21 +31,12 @@ public class Account {
     @Column
     private boolean enabled;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account")
     private List<Contact> contacts;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "acc_login", nullable = false)
     private Set<Role> roles;
-
-    public Account() {}
-
-    public Account(String login, String password, String fio) {
-        this.login = login;
-        this.password = password;
-        this.fio = fio;
-        this.enabled = true;
-    }
 
     public String getLogin() {
         return login;

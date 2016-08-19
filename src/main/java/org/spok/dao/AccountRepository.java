@@ -1,6 +1,6 @@
-package com.example.dao;
+package org.spok.dao;
 
-import com.example.entities.Account;
+import org.spok.entities.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

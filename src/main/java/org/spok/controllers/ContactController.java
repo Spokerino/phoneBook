@@ -1,12 +1,12 @@
-package com.example.controllers;
+package org.spok.controllers;
 
 
-import com.example.entities.Account;
-import com.example.entities.Contact;
-import com.example.services.ContactService;
+import org.spok.entities.Account;
+import org.spok.entities.Contact;
+import org.spok.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,12 +25,11 @@ public class ContactController {
     @Autowired
     private ContactService contactService;
 
-
-
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getContactList(Contact contact){
 
-        String login = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String login = getSecurityContextUser().getUsername();
+
         ModelAndView mav = new ModelAndView("contacts");
         List<Contact> contacts = /*(List<Contact>)*/ contactService.findAllByAccountLogin(login);
 
@@ -52,11 +51,14 @@ public class ContactController {
     @ResponseBody
     @RequestMapping(value = "/loadContact/{id}", method = RequestMethod.GET)
     public Contact getContactByAjax(@PathVariable Integer id) {
-        Contact contact = contactService.findOne(id);
-        contact.setAccount(null);
-        return contact;
+        return contactService.findOne(id);
     }
 
+    @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
+    public String editContact(@PathVariable Integer id) {
+        contactService.delete(id);
+        return "redirect:/contacts";
+    }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String editContact(Contact contact, BindingResult result) {
@@ -68,13 +70,15 @@ public class ContactController {
             return "contacts";
         }
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Account account = contactService.findAccountByLogin((String) auth.getPrincipal());
+        Account account = contactService.findAccountByLogin(getSecurityContextUser().getUsername());
         contact.setAccount(account);
-
 
         contactService.save(contact);
         return "redirect:/contacts";
+    }
+
+    private User getSecurityContextUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 }

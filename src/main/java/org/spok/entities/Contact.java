@@ -1,5 +1,7 @@
-package com.example.entities;
+package org.spok.entities;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -42,19 +44,10 @@ public class Contact {
     private String email;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "acc_login", nullable = false)
     private Account account;
-
-    public Contact() {}
-
-    public Contact(Account account, String firstName, String lastName, String patronymic, String phoneMobile) {
-        this.account = account;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.patronymic = patronymic;
-        this.phoneMobile = phoneMobile;
-    }
 
     public int getIdContact() {
         return idContact;

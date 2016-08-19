@@ -28,6 +28,9 @@ $(document).ready(function() {
         });
         event.preventDefault();
     });
+
+    window.history.pushState("", "", "/login");
+    validateForm('#registration-form');
 });
 
 function validateForm(id) {

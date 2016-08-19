@@ -6,15 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Contacs</title>
-    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"/>-->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script th:src="@{/js/jquery.validate.js}"></script>
     <script th:src="@{/js/contacts.js}"></script>
-    <!--<script th:src="@{/js/contact.js}"></script>-->
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.js"></script>
 
     <style>
         .modal-header, h4, .close {
@@ -22,6 +19,10 @@
             color:white !important;
             text-align: center;
             font-size: 30px;
+        }
+        .popover-title .close{
+            position: relative;
+            bottom: 3px;
         }
     </style>
 </head>
@@ -96,9 +97,6 @@
                                     <input type="email" class="form-control" id="email" placeholder="Enter e-mail" th:field="*{email}"/>
                                 </div>
                             </div>
-                            <!--<div class="checkbox">-->
-                                <!--<label><input type="checkbox" value="" checked>Remember me</label>-->
-                            <!--</div>-->
                             <button type="submit" class="btn btn-success btn-block">
                                 <span class="glyphicon glyphicon-ok"></span> Add to contact list
                             </button>
@@ -172,7 +170,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-success btn-block">
-                                <span class="glyphicon glyphicon-ok"></span> Add to contact list
+                                <span class="glyphicon glyphicon-ok"></span> Submit changes
                             </button>
                         </form>
                     </div>
@@ -196,6 +194,7 @@
                 <th>Mobile Phone</th>
                 <th>Home Phone</th>
                 <th></th>
+                <th></th>
             </tr>
             <tr th:each="contact : ${contacts}">
                 <td th:text="${contactStat.index} + 1"></td>
@@ -205,20 +204,14 @@
                 <td th:text="${contact.phoneMobile}"></td>
                 <td th:text="${contact.phoneHome}"></td>
                 <td>
-                    <button data-toggle="modal" data-target="#editModal" class="btn-info contacts" th:onclick="'showEditModal(' + ${contact.idContact} + ')'">Contact details</button>
+                    <button data-toggle="modal" data-target="#editModal" class="btn btn-info contacts" th:onclick="'showEditModal(' + ${contact.idContact} + ')'">Contact details</button>
+                </td>
+                <td>
+                    <button data-toggle="popover" class="btn btn-danger" th:onclick="'showContactPopover(' + ${contact.idContact} + ')'"><span class="glyphicon glyphicon-trash"></span></button>
                 </td>
             </tr>
         </table>
 </div>
-
-<script>
-    $(document).ready(function(){
-        $("#addContact").click(function(){
-            $("#addModal").modal();
-        });
-        validateForm('#contact-form');
-    });
-</script>
 
 </body>
 </html>

@@ -1,6 +1,6 @@
-package com.example.dao;
+package org.spok.dao;
 
-import com.example.entities.Role;
+import org.spok.entities.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

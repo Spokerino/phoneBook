@@ -1,9 +1,9 @@
-package com.example.services;
+package org.spok.services;
 
-import com.example.dao.AccountRepository;
-import com.example.dao.ContactRepository;
-import com.example.entities.Account;
-import com.example.entities.Contact;
+import org.spok.dao.AccountRepository;
+import org.spok.dao.ContactRepository;
+import org.spok.entities.Account;
+import org.spok.entities.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,11 +34,14 @@ public class ContactService {
         return accountRepository.findByLogin(login);
     }
 
+    public void delete(Integer id) {
+        contactRepository.delete(id);
+    }
+
 /*    public void populate() {
 
         Account poma = new Account("poma", "poma", "Chloe O.O.");
         accountRepository.save(poma);
-        contactRepository.save(new Contact(poma, "Chloe", "O'Brian", "Olegovich", "3332211"));
         contactRepository.save(new Contact(poma, "Chloe", "O'Brian", "Olegovich", "3332211"));
         contactRepository.save(new Contact(poma, "Kim", "Bauer", "Petrovich", "1112233"));
         contactRepository.save(new Contact(poma, "David", "Palmer", "Vasilievich", "4442233"));

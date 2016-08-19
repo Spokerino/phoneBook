@@ -1,7 +1,7 @@
-package com.example.controllers;
+package org.spok.controllers;
 
-import com.example.entities.Account;
-import com.example.services.AccountService;
+import org.spok.entities.Account;
+import org.spok.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -24,14 +24,6 @@ public class AccountController {
         return "login";
     }
 
-//    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-//    public ModelAndView logout() {
-//        ModelAndView mav = new ModelAndView("login");
-//        mav.addObject("msg", "You have been logged out.");
-//
-//        return mav;
-//    }
-
     @ResponseBody
     @RequestMapping(value = "/registration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public String saveFromRegistrationTab(@RequestBody @Valid Account account, BindingResult result) {
@@ -44,23 +36,6 @@ public class AccountController {
         }
 
         return "{\"msg\":\"Registration was completed successfully!\"}";
-    }
-
-
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String openRegistrationForm(Account account) {
-        return "registrationForm";
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String saveRegistrationForm(@Valid Account account,
-                                       BindingResult result) {
-        if (result.hasErrors()) {
-            return "registrationForm";
-        }
-
-        accountService.save(account);
-        return "redirect:/login?registered";
     }
 
 }

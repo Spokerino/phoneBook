@@ -1,7 +1,7 @@
-package com.example.dao;
+package org.spok.dao;
 
 
-import com.example.entities.Contact;
+import org.spok.entities.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +11,5 @@ import java.util.List;
 public interface ContactRepository extends JpaRepository<Contact, Integer> {
 
     List<Contact> findAllByAccountLogin(String login);
+
 }

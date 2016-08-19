@@ -1,4 +1,4 @@
-package com.example.entities;
+package org.spok.entities;
 
 import javax.persistence.*;
 
@@ -13,7 +13,7 @@ public class Role {
     }
 
     @Id
-    @GeneratedValue//(strategy=GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id_role")
     private int idRole;
 
