@@ -1,21 +1,23 @@
 $(document).ready(function() {
-    $('#login-registration').submit(function (event) {
+    //Sending form via ajax to Account controller method with "/registration" mapping
+    $('#registration-form').submit(function (event) {
         var login = $('#login').val();
         var password = $('#password').val();
         var fio = $('#fio').val();
         var json = {"login": login, "password": password, "fio": fio};
 
         $.ajax({
-            url: $('#login-registration').attr("action"),
+            url: $('#registration-form').attr("action"),
             data: JSON.stringify(json),
+            //contentType: 'application/json; charset=utf8',
             dataType: 'json',
             type: "POST",
             success: function (data) {
-//                      console.log("SUCCESS: ", data);
+                console.log("SUCCESS: ", data);
                 window.location.replace("/login?registered");
             },
             error: function (data) {
-//                      console.log("ERROR: ", data);
+                console.log("ERROR: ", data);
                 if (data.responseText === 'exist') {
                     $('#error-message').css("display", "block");
                 }
@@ -29,7 +31,10 @@ $(document).ready(function() {
         event.preventDefault();
     });
 
+    //Clears any parameters after "/login"
     window.history.pushState("", "", "/login");
+
+    //Validates the form using jquery.validate.js
     validateForm('#registration-form');
 });
 

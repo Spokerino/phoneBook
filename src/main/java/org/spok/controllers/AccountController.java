@@ -19,19 +19,20 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/login"}, method = RequestMethod.GET)
     public String openLoginForm(Account account) {
         return "login";
     }
 
     @ResponseBody
-    @RequestMapping(value = "/registration", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/registration", method = RequestMethod.POST,
+                    consumes = MediaType.APPLICATION_JSON_VALUE)
     public String saveFromRegistrationTab(@RequestBody @Valid Account account, BindingResult result) {
         if (result.hasErrors()) {
-            return "Nope";
+            return "Error!";
         }
 
-        if (!accountService.save(account)) {
+        if (accountService.save(account) == null) {
             return "exist";
         }
 

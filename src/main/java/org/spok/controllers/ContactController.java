@@ -31,7 +31,7 @@ public class ContactController {
         String login = getSecurityContextUser().getUsername();
 
         ModelAndView mav = new ModelAndView("contacts");
-        List<Contact> contacts = /*(List<Contact>)*/ contactService.findAllByAccountLogin(login);
+        List<Contact> contacts = contactService.findAllByAccountLogin(login);
 
         if (contacts.size() > 0) {
             mav.addObject("contacts", contacts);

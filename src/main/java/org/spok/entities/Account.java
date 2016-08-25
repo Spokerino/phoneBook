@@ -3,7 +3,6 @@ package org.spok.entities;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +26,6 @@ public class Account {
     @Size(min = 5, max = 35, message = "Full name should be at least {min} characters long")
     private String fio;
 
-    @NotNull
     @Column
     private boolean enabled;
 

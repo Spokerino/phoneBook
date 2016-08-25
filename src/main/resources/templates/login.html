@@ -11,7 +11,7 @@
 </head>
 <body>
 <div id="login-alert" class="alert alert-danger" th:if="${param.error}">
-    Invalid username and password.
+    Invalid username or password.
 </div>
 <div class="alert alert-info" th:if="${param.logout}">
     You have been logged out.
@@ -43,13 +43,13 @@
                     <input class="form-control" type="password" name="password" id="login-password" placeholder="Enter password"/>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-default">Sign In</button>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
                 </div>
             </form>
         </div>
 
         <div id="reg-tab" class="tab-pane fade">
-            <form id="registration-form" class="form-horizontal" role="form" th:action="@{/register}" th:object="${account}" method="post">
+            <form id="registration-form" class="form-horizontal" role="form" th:action="@{/registration}" th:object="${account}" method="post">
                 <div class="form-group">
                     <label for="login"> User name:</label><br/>
                     <div class="err">
@@ -72,7 +72,7 @@
                     <div id="error-message" class="alert alert-danger">
                         <a onclick="$('#error-message').css('display', 'none')" class="close pull-right" aria-label="close">&times;</a>
                          Such user already exist!</div>
-                    <button type="submit" class="btn btn-default">Register</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
                 </div>
             </form>
         </div>
